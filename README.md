@@ -98,3 +98,8 @@ Mohamed Samir - [GitHub Profile](https://github.com/MohamedSamirEdris)
 - [Polygon.io](https://polygon.io) for providing the stock market data API
 - [shadcn/ui](https://ui.shadcn.com) for the beautiful component library
 - [Tailwind CSS](https://tailwindcss.com) for the utility-first CSS framework
+
+
+## Deployment
+
+ -[Vercal] https://thndr-65v0r29xb-mohamedsamiredris-projects.vercel.app/
