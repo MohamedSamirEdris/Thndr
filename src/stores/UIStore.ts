@@ -64,12 +64,25 @@ export class UIStore {
     }, durationMs);
   }
 
+  private onRateLimitExpired?: () => void;
+
   clearRateLimit() {
     this.rateLimitEndTime = null;
     if (this.rateLimitTimer) {
       clearTimeout(this.rateLimitTimer);
       this.rateLimitTimer = null;
     }
+    // Run callback in next tick to ensure state is updated
+    if (this.onRateLimitExpired) {
+      setTimeout(() => {
+        this.onRateLimitExpired?.();
+        this.onRateLimitExpired = undefined;
+      }, 0);
+    }
+  }
+
+  setOnRateLimitExpired(callback: () => void) {
+    this.onRateLimitExpired = callback;
   }
 
   get isRateLimited() {

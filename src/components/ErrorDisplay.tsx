@@ -30,6 +30,7 @@ export const ErrorDisplay = ({ error }: ErrorDisplayProps) => {
           forceUpdate({});
         } else {
           timer && clearInterval(timer);
+          forceUpdate({}); // Force one last update when timer reaches 0
         }
       }, 1000);
     }

@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchStocks } from '@/services/api';
 import type { StocksResponse } from '@/types/stock';
 import { NetworkError, RateLimitError } from '@/types/errors';
@@ -6,6 +6,7 @@ import { useRootStore } from '@/stores/StoreContext';
 
 export const useStockSearch = (search: string) => {
   const { uiStore } = useRootStore();
+  const queryClient = useQueryClient();
   return useInfiniteQuery<StocksResponse>({
     queryKey: ['stocks', search],
     queryFn: async ({ pageParam }) => {
@@ -14,6 +15,10 @@ export const useStockSearch = (search: string) => {
       } catch (error) {
         if (error instanceof RateLimitError) {
           uiStore.setRateLimitTimeout(60000);
+          uiStore.setOnRateLimitExpired(() => {
+            // Invalidate and refetch when rate limit expires
+            queryClient.invalidateQueries({ queryKey: ['stocks', search] });
+          });
         }
         throw error;
       }
