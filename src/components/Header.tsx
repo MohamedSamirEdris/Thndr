@@ -5,8 +5,8 @@ export const Header = observer(() => {
   const { uiStore } = rootStore;
 
   return (
-    <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 transition-colors duration-200">
-      <div className="flex items-center gap-4">
+    <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 transition-colors duration-200 w-full h-20 sticky top-0 z-50 min-w-[320px]">
+      <div className="flex items-center gap-4 flex-shrink-0">
         <img src="/nasdaq1.svg" alt="Nasdaq Logo" className="w-22 h-12" />
       </div>
 

@@ -15,7 +15,8 @@ import { APIError, RateLimitError, NetworkError } from '@/types/errors';
 
 export const fetchStocks = async (
   search?: string,
-  cursor?: string
+  cursor?: string,
+  signal?: AbortSignal
 ): Promise<StocksResponse> => {
   const params = new URLSearchParams({
     apiKey: API_KEY,
@@ -28,7 +29,9 @@ export const fetchStocks = async (
   });
 
   try {
-    const response = await fetch(`${BASE_URL}/reference/tickers?${params}`);
+    const response = await fetch(`${BASE_URL}/reference/tickers?${params}`, {
+      signal
+    });
     
     if (!response.ok) {
       if (response.status === 429) {
