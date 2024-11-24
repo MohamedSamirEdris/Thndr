@@ -16,5 +16,16 @@ export const useStockSearch = (search: string) => {
     },
     staleTime: 30000,
     cacheTime: 5 * 60 * 1000, // 5 minutes
+    refetchOnWindowFocus: false,
+    enabled: true,
+    retry: (failureCount, error) => {
+      if (error instanceof RateLimitError) {
+        return false; // Don't retry rate limit errors
+      }
+      if (error instanceof NetworkError) {
+        return failureCount < 3; // Retry network errors up to 3 times
+      }
+      return failureCount < 2; // Retry other errors up to 2 times
+    },
   });
 };

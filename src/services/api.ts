@@ -11,6 +11,8 @@ if (!BASE_URL) {
   throw new Error('API_BASE_URL is not defined in environment variables');
 }
 
+import { APIError, RateLimitError, NetworkError } from '@/types/errors';
+
 export const fetchStocks = async (
   search?: string,
   cursor?: string
@@ -25,9 +27,30 @@ export const fetchStocks = async (
     ...(cursor && { cursor }),
   });
 
-  const response = await fetch(`${BASE_URL}/reference/tickers?${params}`);
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
+  try {
+    const response = await fetch(`${BASE_URL}/reference/tickers?${params}`);
+    
+    if (!response.ok) {
+      if (response.status === 429) {
+        throw new RateLimitError();
+      }
+      
+      const errorData = await response.json().catch(() => ({}));
+      throw new APIError(
+        errorData.error || 'An error occurred while fetching stocks',
+        response.status,
+        errorData.code
+      );
+    }
+
+    return response.json();
+  } catch (error) {
+    if (error instanceof APIError) {
+      throw error;
+    }
+    if (error instanceof TypeError && error.message === 'Failed to fetch') {
+      throw new NetworkError();
+    }
+    throw new APIError('An unexpected error occurred');
   }
-  return response.json();
 };
