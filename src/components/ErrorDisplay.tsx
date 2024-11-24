@@ -2,6 +2,7 @@
 import { RateLimitError, NetworkError } from '@/types/errors';
 import { useRootStore } from '@/stores/StoreContext';
 import React from 'react';
+import { Button } from './ui/button';
 
 interface ErrorDisplayProps {
   error: Error;
@@ -21,7 +22,7 @@ export const ErrorDisplay = ({ error }: ErrorDisplayProps) => {
 
   const { uiStore } = useRootStore();
   const [, forceUpdate] = React.useState({});
-  
+
   React.useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
     if (error instanceof RateLimitError && uiStore.isRateLimited) {
@@ -30,7 +31,7 @@ export const ErrorDisplay = ({ error }: ErrorDisplayProps) => {
           forceUpdate({});
         } else {
           timer && clearInterval(timer);
-          forceUpdate({}); // Force one last update when timer reaches 0
+          forceUpdate({});
         }
       }, 1000);
     }
@@ -38,13 +39,11 @@ export const ErrorDisplay = ({ error }: ErrorDisplayProps) => {
       if (timer) clearInterval(timer);
     };
   }, [error, uiStore]);
-  
+
   if (error instanceof RateLimitError) {
     title = 'Rate Limit Exceeded';
     const seconds = uiStore.rateLimitRemainingSeconds;
-    message = seconds > 0 
-      ? `Retrying in ${seconds} seconds...` 
-      : 'Please wait a moment before trying again';
+    message = seconds > 0 ? `Retrying in ${seconds} seconds...` : '';
     icon = (
       <path
         strokeLinecap="round"
@@ -79,6 +78,15 @@ export const ErrorDisplay = ({ error }: ErrorDisplayProps) => {
       </svg>
       <div className="text-lg font-medium">{title}</div>
       <p className="text-sm text-gray-500">{message}</p>
+      {error instanceof RateLimitError && !uiStore.isRateLimited && (
+        <Button 
+          variant="outline" 
+          className="mt-4"
+          onClick={() => window.location.reload()}
+        >
+          Refresh Page
+        </Button>
+      )}
     </div>
   );
 };

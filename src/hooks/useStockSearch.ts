@@ -16,7 +16,6 @@ export const useStockSearch = (search: string) => {
         if (error instanceof RateLimitError) {
           uiStore.setRateLimitTimeout(60000);
           uiStore.setOnRateLimitExpired(() => {
-            // Invalidate and refetch when rate limit expires
             queryClient.invalidateQueries({ queryKey: ['stocks', search] });
           });
         }
