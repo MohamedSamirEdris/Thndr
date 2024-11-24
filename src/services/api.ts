@@ -11,13 +11,18 @@ if (!BASE_URL) {
   throw new Error('API_BASE_URL is not defined in environment variables');
 }
 
-export const fetchStocks = async (search?: string): Promise<StocksResponse> => {
+export const fetchStocks = async (
+  search?: string,
+  cursor?: string
+): Promise<StocksResponse> => {
   const params = new URLSearchParams({
     apiKey: API_KEY,
     market: 'stocks',
     active: 'true',
     limit: '20',
+    exchange: 'XNAS',
     ...(search && { search }),
+    ...(cursor && { cursor }),
   });
 
   const response = await fetch(`${BASE_URL}/reference/tickers?${params}`);
