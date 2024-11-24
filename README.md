@@ -1,50 +1,100 @@
-# React + TypeScript + Vite
+# Stock Market Explorer (Thndr Task)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive web application for exploring stock market data with real-time search capabilities and infinite scrolling.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Real-time Stock Search**: Instantly search through thousands of stocks
+- **Infinite Scrolling**: Seamlessly load more stocks as you scroll
+- **Dark/Light Mode**: Toggle between dark and light themes
+- **Responsive Design**: Works perfectly on all device sizes
+- **Error Handling**: Graceful handling of API rate limits and network errors
+- **Loading States**: Smooth loading indicators for better UX
 
-## Expanding the ESLint configuration
+## 🛠 Technology Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Frontend Framework**: React 18 with TypeScript
+- **Build Tool**: Vite for lightning-fast development
+- **State Management**:
+  - MobX for UI state (themes, preferences)
+  - React Query for server state management
+- **Styling**:
+  - Tailwind CSS for utility-first styling
+  - shadcn/ui for beautiful, accessible components
+- **API Integration**: Custom API service with error handling
+- **Code Quality**:
+  - ESLint for code linting
+  - TypeScript for type safety
+  - Prettier for code formatting
 
-- Configure the top-level `parserOptions` property like this:
+## 📦 Installation
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+1. Clone the repository:
+
+```bash
+git clone https://github.com/MohamedSamirEdris/Thndr.git
+cd Thndr
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+2. Install dependencies:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+npm install
 ```
+
+3. Create a `.env` file in the root directory:
+
+```env
+VITE_API_KEY=your_api_key_here
+VITE_API_BASE_URL=your_api_base_url_here
+```
+
+4. Start the development server:
+
+```bash
+npm run dev
+```
+
+## 🔧 Available Scripts
+
+- `npm run dev`: Start development server
+- `npm run build`: Build for production
+- `npm run lint`: Run ESLint
+- `npm run preview`: Preview production build locally
+
+## 🎯 Future Enhancements
+
+- [ ] Add detailed stock view with charts
+- [ ] Implement user authentication
+- [ ] Add watchlist functionality
+- [ ] Integrate real-time price updates
+- [ ] Add an order system so user can buy and sell stocks
+- [ ] Add Deposit and withdrawal system
+- [ ] Add more technical indicators
+- [ ] Implement stock comparison features
+- [ ] Add portfolio tracking
+- [ ] Integrate news feed for stocks
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 👨‍💻 Author
+
+Mohamed Samir - [GitHub Profile](https://github.com/MohamedSamirEdris)
+
+## 🙏 Acknowledgments
+
+- [Polygon.io](https://polygon.io) for providing the stock market data API
+- [shadcn/ui](https://ui.shadcn.com) for the beautiful component library
+- [Tailwind CSS](https://tailwindcss.com) for the utility-first CSS framework
