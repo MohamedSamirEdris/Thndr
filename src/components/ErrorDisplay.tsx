@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { RateLimitError, NetworkError } from '@/types/errors';
+import { useRootStore } from '@/stores/StoreContext';
+import React from 'react';
 
 interface ErrorDisplayProps {
   error: Error;
@@ -16,9 +19,31 @@ export const ErrorDisplay = ({ error }: ErrorDisplayProps) => {
     />
   );
 
+  const { uiStore } = useRootStore();
+  const [, forceUpdate] = React.useState({});
+  
+  React.useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+    if (error instanceof RateLimitError && uiStore.isRateLimited) {
+      timer = setInterval(() => {
+        if (uiStore.rateLimitRemainingSeconds > 0) {
+          forceUpdate({});
+        } else {
+          timer && clearInterval(timer);
+        }
+      }, 1000);
+    }
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [error, uiStore]);
+  
   if (error instanceof RateLimitError) {
     title = 'Rate Limit Exceeded';
-    message = 'Please wait a moment before trying again';
+    const seconds = uiStore.rateLimitRemainingSeconds;
+    message = seconds > 0 
+      ? `Retrying in ${seconds} seconds...` 
+      : 'Please wait a moment before trying again';
     icon = (
       <path
         strokeLinecap="round"

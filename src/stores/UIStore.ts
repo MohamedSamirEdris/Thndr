@@ -6,6 +6,7 @@ export type Theme = 'light' | 'dark';
 
 export class UIStore {
   theme: Theme = 'light';
+  rateLimitEndTime: number | null = null;
 
   constructor(_rootStore: RootStore) {
     makeAutoObservable(this);
@@ -14,7 +15,6 @@ export class UIStore {
   }
 
   private initializeTheme() {
-    // Listen for system theme changes
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     mediaQuery.addEventListener('change', (e) => {
       if (!localStorage.getItem('ui-preferences')) {
@@ -23,7 +23,6 @@ export class UIStore {
       }
     });
 
-    // Apply initial theme
     document.documentElement.classList.toggle('dark', this.theme === 'dark');
   }
 
@@ -47,5 +46,51 @@ export class UIStore {
     localStorage.setItem('ui-preferences', JSON.stringify({
       theme: this.theme,
     }));
+  }
+
+  private rateLimitTimer: NodeJS.Timeout | null = null;
+
+  setRateLimitTimeout(durationMs: number = 60000) {
+    // Clear any existing timer
+    if (this.rateLimitTimer) {
+      clearTimeout(this.rateLimitTimer);
+    }
+
+    this.rateLimitEndTime = Date.now() + durationMs;
+    
+    // Set new timer
+    this.rateLimitTimer = setTimeout(() => {
+      this.clearRateLimit();
+    }, durationMs);
+  }
+
+  clearRateLimit() {
+    this.rateLimitEndTime = null;
+    if (this.rateLimitTimer) {
+      clearTimeout(this.rateLimitTimer);
+      this.rateLimitTimer = null;
+    }
+  }
+
+  get isRateLimited() {
+    if (!this.rateLimitEndTime) return false;
+    const isLimited = Date.now() < this.rateLimitEndTime;
+    if (!isLimited) {
+      this.clearRateLimit();
+    }
+    return isLimited;
+  }
+
+  get rateLimitRemainingSeconds() {
+    if (!this.rateLimitEndTime) return 0;
+    const remaining = Math.max(0, Math.ceil((this.rateLimitEndTime - Date.now()) / 1000));
+    if (remaining === 0) {
+      this.clearRateLimit();
+    }
+    return remaining;
+  }
+
+  get shouldRetry() {
+    return this.isRateLimited && this.rateLimitRemainingSeconds > 0;
   }
 }
