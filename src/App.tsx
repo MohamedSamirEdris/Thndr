@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { StockList } from '@/components/StockList';
+import { rootStore } from '@/stores/RootStore';
 import './App.css';
 
 function App() {
@@ -14,7 +15,7 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="container mx-auto">
+      <div className={`container mx-auto ${rootStore.uiStore.theme}`}>
         <StockList />
       </div>
     </QueryClientProvider>
