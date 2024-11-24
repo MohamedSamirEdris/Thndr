@@ -1,14 +1,21 @@
-import { Button } from '@/components/ui/button';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { StockList } from '@/components/StockList';
 import './App.css';
 
 function App() {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+        retry: 1,
+      },
+    },
+  });
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div>
-        <Button className="bg-red-500">Click me</Button>
+      <div className="container mx-auto">
+        <StockList />
       </div>
     </QueryClientProvider>
   );
