@@ -1,9 +1,13 @@
+import { useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { StockList } from '@/components/StockList';
+import { SplashScreen } from '@/pages/SplashScreen';
+import { ExploreScreen } from '@/pages/ExploreScreen';
 import { rootStore } from '@/stores/RootStore';
 import './App.css';
 
 function App() {
+  const [showSplash, setShowSplash] = useState(true);
+  
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -16,7 +20,11 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <div className={`container mx-auto ${rootStore.uiStore.theme}`}>
-        <StockList />
+        {showSplash ? (
+          <SplashScreen onComplete={() => setShowSplash(false)} />
+        ) : (
+          <ExploreScreen />
+        )}
       </div>
     </QueryClientProvider>
   );
