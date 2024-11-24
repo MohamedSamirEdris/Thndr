@@ -1,30 +1,26 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { SearchBar } from '@/components/SearchBar';
 import { useStockSearch } from '@/hooks/useStockSearch';
 import type { Stock } from '@/types/stock';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 
 export const StockList = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage } = 
-    useStockSearch(searchQuery);
+  const {
+    data,
+    isLoading,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useStockSearch(searchQuery);
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (loadMoreRef.current) {
-      observer.observe(loadMoreRef.current);
+  useInfiniteScroll(loadMoreRef, () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
     }
-
-    return () => observer.disconnect();
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+  });
 
   if (error)
     return (
@@ -48,7 +44,9 @@ export const StockList = () => {
             className="p-4 border rounded-lg transition-shadow shadow-md hover:shadow-lg"
           >
             <h3 className="font-bold text-center text-lg">{stock.ticker}</h3>
-            <p className="text-sm text-gray-600 text-center mt-2 line-clamp-2">{stock.name}</p>
+            <p className="text-sm text-gray-600 text-center mt-2 line-clamp-2">
+              {stock.name}
+            </p>
           </div>
         ))}
       </div>
