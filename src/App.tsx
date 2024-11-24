@@ -19,7 +19,7 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className={`container mx-auto ${rootStore.uiStore.theme}`}>
+      <div className={`${rootStore.uiStore.theme} min-h-screen`}>
         {showSplash ? (
           <SplashScreen onComplete={() => setShowSplash(false)} />
         ) : (

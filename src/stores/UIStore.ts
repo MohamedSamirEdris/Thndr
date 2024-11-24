@@ -11,10 +11,26 @@ export class UIStore {
   constructor(private rootStore: RootStore) {
     makeAutoObservable(this);
     this.loadFromLocalStorage();
+    this.initializeTheme();
+  }
+
+  private initializeTheme() {
+    // Listen for system theme changes
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    mediaQuery.addEventListener('change', (e) => {
+      if (!localStorage.getItem('ui-preferences')) {
+        this.theme = e.matches ? 'dark' : 'light';
+        document.documentElement.classList.toggle('dark', e.matches);
+      }
+    });
+
+    // Apply initial theme
+    document.documentElement.classList.toggle('dark', this.theme === 'dark');
   }
 
   toggleTheme() {
     this.theme = this.theme === 'light' ? 'dark' : 'light';
+    document.documentElement.classList.toggle('dark', this.theme === 'dark');
     this.saveToLocalStorage();
   }
 

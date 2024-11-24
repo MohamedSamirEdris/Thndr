@@ -19,7 +19,7 @@ export const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
   }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-blue-50 to-white">
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800">
       <div className="relative">
         <img
           src="/nasdaq1.svg"
@@ -37,15 +37,15 @@ export const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
       </div>
 
       <div className="mt-24 space-y-2 text-center">
-        <h1 className="text-2xl font-bold text-gray-800 animate-fade-in">
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-white animate-fade-in">
           Stock Market Explorer
         </h1>
-        <p className="text-gray-600 animate-fade-in delay-300">
+        <p className="text-gray-600 dark:text-gray-300 animate-fade-in delay-300">
           Your gateway to financial markets
         </p>
       </div>
 
-      <div className="fixed bottom-8 text-gray-600 animate-fade-in delay-500">
+      <div className="fixed bottom-8 text-gray-600 dark:text-gray-400 animate-fade-in delay-500">
         Developed by: Mohamed Samir
       </div>
     </div>

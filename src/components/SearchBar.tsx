@@ -31,7 +31,7 @@ export const SearchBar = ({ onSearch, isLoading }: SearchBarProps) => {
         placeholder="Search stocks..."
         value={value}
         onChange={handleChange}
-        className="pr-10"
+        className="pr-10 rounded-lg bg-white dark:bg-gray-800 dark:text-white dark:border-gray-700 dark:placeholder-gray-400"
       />
       {isLoading && (
         <div className="absolute right-3 top-1/2 -translate-y-1/2">

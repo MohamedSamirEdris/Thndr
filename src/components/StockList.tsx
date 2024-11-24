@@ -86,7 +86,7 @@ export const StockList = () => {
   const allStocks = data?.pages.flatMap((page) => page.results) ?? [];
 
   return (
-    <div className="p-4 text-black min-h-screen">
+    <div className="p-4 text-black dark:text-white min-h-screen">
       <div className="max-w-4xl mx-auto">
         <SearchBar onSearch={setSearchQuery} isLoading={isLoading} />
       </div>
@@ -95,10 +95,10 @@ export const StockList = () => {
         {allStocks.map((stock: Stock) => (
           <div
             key={stock.ticker}
-            className="p-4 border rounded-lg transition-shadow shadow-md hover:shadow-lg"
+            className="p-4 border rounded-lg transition-all duration-200 shadow-md hover:shadow-lg bg-white dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
           >
             <h3 className="font-bold text-center text-lg">{stock.ticker}</h3>
-            <p className="text-sm text-gray-600 text-center mt-2 line-clamp-2">
+            <p className="text-sm text-gray-600 dark:text-gray-300 text-center mt-2 line-clamp-2">
               {stock.name}
             </p>
           </div>
